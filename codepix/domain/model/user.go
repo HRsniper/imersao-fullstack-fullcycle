@@ -18,7 +18,7 @@ type User struct {
 func (user *User) isValid() error {
   _, err := govalidator.ValidateStruct(user)
 
-  if user.ID == "" && user.Name == "" && user.Email == ""{
+  if user.ID == "" || user.Name == "" || user.Email == ""{
     return errors.New("these fields are mandatory")
   }
 

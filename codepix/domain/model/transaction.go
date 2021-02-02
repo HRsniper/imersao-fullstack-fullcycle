@@ -40,7 +40,7 @@ type Transaction struct {
 
 // método attached para a struct
 func (t *Transaction) isValid() error {
-  validator, err := govalidator.ValidateStruct(t)
+  _, err := govalidator.ValidateStruct(t)
 
   if t.Amount <= 0 {
     return errors.New("the amount must be greater than 0")
@@ -57,7 +57,7 @@ func (t *Transaction) isValid() error {
   if err != nil {
     return err
   }
-  
+
   return nil
 }
 

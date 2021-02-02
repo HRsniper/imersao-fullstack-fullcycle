@@ -16,7 +16,8 @@ type Bank struct {
 
 // método attached para a struct
 func (bank *Bank) isValid() error {
-  validator, err := govalidator.ValidateStruct(bank)
+  // validator, err := govalidator.ValidateStruct(bank)
+  _, err := govalidator.ValidateStruct(bank)
 
 	if err != nil {
 		return err

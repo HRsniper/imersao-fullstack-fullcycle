@@ -16,7 +16,7 @@ type Account struct {
 
 // método attached para a struct
 func (account *Account) isValid() error {
-  validator, err := govalidator.ValidateStruct(account)
+  _, err := govalidator.ValidateStruct(account)
 
   if err != nil {
     return err

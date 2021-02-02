@@ -28,7 +28,7 @@ type PixKey struct {
 
 // método attached para a struct
 func (pixKey *PixKey) isValid() error {
-  validator, err := govalidator.ValidateStruct(pixKey)
+  _, err := govalidator.ValidateStruct(pixKey)
 
   if pixKey.Kind != "email" && pixKey.Kind != "cpf" {
     return errors.New("invalid type of key")

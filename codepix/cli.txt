@@ -7,3 +7,15 @@ docker exec -it codepix_app_1 bash = entrar no container via bash
 ls ou dir = ver os arvivos do container
 
 go mod init github.com/HRsniper/imersao-fullstack-fullcycle = init e vai baixar auto tods pacotes que for add
+
+docker exec -it codepix_app_1 bash = entrar no container via bash
+
+evans -r repl = client grpc
+    bash> call RegisterPixKey
+
+bash> cobra init --pkg-name codepix
+bash> cobra add grpc
+
+bash> go run main.go grpc
+
+

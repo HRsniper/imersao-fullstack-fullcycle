@@ -1,0 +1,14 @@
+{
+  "protoc": {
+      "path": "/path/to/protoc",
+      "compile_all_path": "codepix/application/grpc/protofiles",
+      "compile_on_save": false,
+      "options": [
+        "--go_out=application/grpc/pb",
+        "--go_opt=paths=source_relative",
+        "--go_grpc_out=application/grpc/pb",
+        "--go_grpc_opt=paths=source_relative",
+        "--proto_path=application/grpc/protofiles application/grpc/protofiles/*.proto"
+      ]
+  }
+}

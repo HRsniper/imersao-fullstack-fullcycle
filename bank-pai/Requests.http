@@ -4,3 +4,20 @@ GET http://localhost:3000/api/bank-accounts/:bankAccountId
 
 pixKeys
 GET http://localhost:3000/api/bank-accounts/:bankAccountId/pix-keys
+POST http://localhost:8001/api/bank-accounts/:bankAccountId/pix-keys
+{ "kind": "email", "key": "user1@user.com" }
+GET http://localhost:3000/api/bank-accounts/:bankAccountId/pix-keys/exists?key=user1@user.com&kind=email
+
+transactions
+GET http://localhost:3000/api/bank-accounts/:bankAccountId/transactions
+POST http://localhost:8001/api/bank-accounts/:bankAccountId/transactions
+{ "amount": 1000, "pix_key_key": "user1@user.com, "pix_key_kind": "email", "description":"test" }
+
+pgadmin
+http://localhost:9000/browser/
+controlcenter
+http://localhost:9021/
+
+docker-compose -f docker-compose_bbx.yaml up
+docker-compose -f docker-compose_bbx.yaml exec app_bbx bash
+

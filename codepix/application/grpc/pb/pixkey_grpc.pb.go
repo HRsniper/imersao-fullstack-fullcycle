@@ -32,7 +32,7 @@ func NewPixServiceClient(cc grpc.ClientConnInterface) PixServiceClient {
 
 func (c *pixServiceClient) RegisterPixKey(ctx context.Context, in *PixKeyRegistration, opts ...grpc.CallOption) (*PixKeyCreatedResult, error) {
 	out := new(PixKeyCreatedResult)
-	err := c.cc.Invoke(ctx, "/github.com.codeedu.codepix.PixService/RegisterPixKey", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/github.com.HRsniper.codepix.PixService/RegisterPixKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (c *pixServiceClient) RegisterPixKey(ctx context.Context, in *PixKeyRegistr
 
 func (c *pixServiceClient) Find(ctx context.Context, in *PixKey, opts ...grpc.CallOption) (*PixKeyInfo, error) {
 	out := new(PixKeyInfo)
-	err := c.cc.Invoke(ctx, "/github.com.codeedu.codepix.PixService/Find", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/github.com.HRsniper.codepix.PixService/Find", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func _PixService_RegisterPixKey_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/github.com.codeedu.codepix.PixService/RegisterPixKey",
+		FullMethod: "/github.com.HRsniper.codepix.PixService/RegisterPixKey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PixServiceServer).RegisterPixKey(ctx, req.(*PixKeyRegistration))
@@ -108,7 +108,7 @@ func _PixService_Find_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/github.com.codeedu.codepix.PixService/Find",
+		FullMethod: "/github.com.HRsniper.codepix.PixService/Find",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PixServiceServer).Find(ctx, req.(*PixKey))
@@ -120,7 +120,7 @@ func _PixService_Find_Handler(srv interface{}, ctx context.Context, dec func(int
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PixService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "github.com.codeedu.codepix.PixService",
+	ServiceName: "github.com.HRsniper.codepix.PixService",
 	HandlerType: (*PixServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

@@ -1,0 +1,6 @@
+bankAccount
+GET http://localhost:3000/api/bank-accounts
+GET http://localhost:3000/api/bank-accounts/:bankAccountId
+
+pixKeys
+GET http://localhost:3000/api/bank-accounts/:bankAccountId/pix-keys

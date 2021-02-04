@@ -35,7 +35,7 @@ import { Transaction } from './models/transaction.model';
         transport: Transport.GRPC,
         options: {
           url: process.env.GRPC_URL,
-          package: 'github.com.codeedu.codepix',
+          package: 'github.com.HRsniper.codepix',
           protoPath: [join(__dirname, 'protofiles/pixkey.proto')]
         }
       }

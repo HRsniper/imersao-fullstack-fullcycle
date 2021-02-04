@@ -7,40 +7,39 @@ import (
   "time"
 )
 
-// estado da transação
 const (
-  TransactionPending string = "pending"
+  TransactionPending   string = "pending"
   TransactionCompleted string = "completed"
-  TransactionError string = "error"
+  TransactionError     string = "error"
   TransactionConfirmed string = "confirmed"
 )
 
-// interface para implementação do db
 type TransactionRepositoryInterface interface {
-  // função() (retorno)
   Register(transaction *Transaction) error
   Save(transaction *Transaction) error
   Find(id string) (*Transaction, error)
 }
 
-// lista de transação
 type Transactions struct {
   Transaction []Transaction
 }
 
 type Transaction struct {
-  Base `valid:"required"`
-  AccountFrom *Account `valid:"-"`
-  AccountFromID *Account `gorm:"column:account_from_id;type:uuid;" valid:"notnull"`
-  Amount float64 `json:"amount" gorm:"type:float" valid:"notnull"`
-  PixKeyTo *PixKey `valid:"-"`
-  PixKeyIdTo string `gorm:"column:pix_key_id_to;type:uuid;" valid:"notnull"`
-  Status string `json:"status" gorm:"type:varchar(20)" valid:"notnull"`
-  Description string `json:"description" gorm:"type:varchar(255)" valid:"-"`
-  CancelDescription string `json:"cancel_description" gorm:"type:varchar(255)" valid:"-"`
+  Base              `valid:"required"`
+  AccountFrom       *Account `valid:"-"`
+  AccountFromID     string   `gorm:"column:account_from_id;type:uuid;" valid:"notnull"`
+  Amount            float64  `json:"amount" gorm:"type:float" valid:"notnull"`
+  PixKeyTo          *PixKey  `valid:"-"`
+  PixKeyIdTo        string   `gorm:"column:pix_key_id_to;type:uuid;" valid:"notnull"`
+  Status            string   `json:"status" gorm:"type:varchar(20)" valid:"notnull"`
+  Description       string   `json:"description" gorm:"type:varchar(255)" valid:"-"`
+  CancelDescription string   `json:"cancel_description" gorm:"type:varchar(255)" valid:"-"`
 }
 
-// método attached para a struct
+func init() {
+  govalidator.SetFieldsRequiredByDefault(true)
+}
+
 func (t *Transaction) isValid() error {
   _, err := govalidator.ValidateStruct(t)
 
@@ -52,39 +51,39 @@ func (t *Transaction) isValid() error {
     return errors.New("invalid status for the transaction")
   }
 
-  if t.PixKeyTo.AccountID == t.AccountFrom.ID {
+  if t.PixKeyTo.AccountID == t.AccountFromID {
     return errors.New("the source and destination account cannot be the same")
   }
 
   if err != nil {
     return err
   }
-
   return nil
 }
 
-// NewTransaction  sempre vai retornar 2 valores account e error
-func NewTransaction(accountFrom *Account, amount float64, pixKeyTo *PixKey, description string) (*Transaction, error) {
+func NewTransaction(accountFrom *Account, amount float64, pixKeyTo *PixKey, description string, id string) (*Transaction, error) {
   transaction := Transaction{
-    AccountFrom: accountFrom,
-    Amount: amount,
-    PixKeyTo: pixKeyTo,
-    Status: TransactionPending,
-    Description: description,
+    AccountFrom:   accountFrom,
+    AccountFromID: accountFrom.ID,
+    Amount:        amount,
+    PixKeyTo:      pixKeyTo,
+    PixKeyIdTo:    pixKeyTo.ID,
+    Status:        TransactionPending,
+    Description:   description,
   }
-
-  transaction.ID = uuid.NewV4().String()
+  if id == "" {
+    transaction.ID = uuid.NewV4().String()
+  } else {
+    transaction.ID = id
+  }
   transaction.CreatedAt = time.Now()
-
   err := transaction.isValid()
   if err != nil {
     return nil, err
   }
-
   return &transaction, nil
 }
 
-// método attached para a struct
 func (t *Transaction) Complete() error {
   t.Status = TransactionCompleted
   t.UpdatedAt = time.Now()
@@ -92,7 +91,6 @@ func (t *Transaction) Complete() error {
   return err
 }
 
-// método attached para a struct
 func (t *Transaction) Confirm() error {
   t.Status = TransactionConfirmed
   t.UpdatedAt = time.Now()
@@ -100,11 +98,10 @@ func (t *Transaction) Confirm() error {
   return err
 }
 
-// método attached para a struct
 func (t *Transaction) Cancel(description string) error {
   t.Status = TransactionError
+  t.CancelDescription = description
   t.UpdatedAt = time.Now()
-  t.Description = description
   err := t.isValid()
   return err
 }

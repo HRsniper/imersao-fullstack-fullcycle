@@ -33,16 +33,16 @@ func (p *PixGrpcService) Find(ctx context.Context, in *pb.PixKey) (*pb.PixKeyInf
   }
 
   return &pb.PixKeyInfo{
-    Id: pixKey.ID,
-    Kind: pixKey.Kind,
-    Key: pixKey.Key,
-    Account: &pb.Account{
-      AccountId: pixKey.AccountID,
+    Id:        pixKey.ID,
+    Kind:      pixKey.Kind,
+    Key:       pixKey.Key,
+    Account:   &pb.Account{
+      AccountId:     pixKey.AccountID,
       AccountNumber: pixKey.Account.Number,
-      BankId: pixKey.Account.BankID,
-      BankName: pixKey.Account.Bank.Name,
-      OwnerName: pixKey.Account.OwnerName,
-      CreatedAt: pixKey.Account.CreatedAt.String(),
+      BankId:        pixKey.Account.BankID,
+      BankName:      pixKey.Account.Bank.Name,
+      OwnerName:     pixKey.Account.OwnerName,
+      CreatedAt:     pixKey.Account.CreatedAt.String(),
     },
     CreatedAt: pixKey.CreatedAt.String(),
   }, nil

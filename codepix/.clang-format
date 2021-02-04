@@ -59,7 +59,7 @@ BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: false
 BreakConstructorInitializers: AfterColon
 BreakStringLiterals: true
-ColumnLimit:     110
+ColumnLimit:     120
 CommentPragmas:  '^ IWYU pragma:'
 CompactNamespaces: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
@@ -93,7 +93,7 @@ IndentCaseBlocks: false
 IndentGotoLabels: true
 IndentPPDirectives: BeforeHash
 IndentExternBlock: Indent
-IndentWidth:     2
+IndentWidth:     4
 IndentWrappedFunctionNames: true
 InsertTrailingCommas: None
 # InsertTrailingCommas: Wrapped

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package github.com.HRsniper.codepix;
+package github.com.codeedu.codepix;
 
 option go_package = "protofiles;pb";
 

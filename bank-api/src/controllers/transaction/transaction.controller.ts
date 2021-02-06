@@ -8,22 +8,18 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
-  ValidationPipe,
-} from '@nestjs/common';
-import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
-import { Producer } from '@nestjs/microservices/external/kafka.interface';
-import { InjectRepository } from '@nestjs/typeorm';
-import { TransactionDto } from 'src/dto/transaction.dto';
-import { BankAccount } from 'src/models/bank-account.model';
-import { PixKey } from 'src/models/pix-key.model';
-import {
-  Transaction,
-  TransactionOperation,
-  TransactionStatus,
-} from 'src/models/transaction.model';
-import { Repository } from 'typeorm';
+  ValidationPipe
+} from "@nestjs/common";
+import { ClientKafka, MessagePattern, Payload } from "@nestjs/microservices";
+import { Producer } from "@nestjs/microservices/external/kafka.interface";
+import { InjectRepository } from "@nestjs/typeorm";
+import { TransactionDto } from "src/dto/transaction.dto";
+import { BankAccount } from "src/models/bank-account.model";
+import { PixKey } from "src/models/pix-key.model";
+import { Transaction, TransactionOperation, TransactionStatus } from "src/models/transaction.model";
+import { Repository } from "typeorm";
 
-@Controller('bank-accounts/:bankAccountId/transactions')
+@Controller("bank-accounts/:bankAccountId/transactions")
 export class TransactionController implements OnModuleInit, OnModuleDestroy {
   private kafkaProducer: Producer;
   constructor(
@@ -33,8 +29,8 @@ export class TransactionController implements OnModuleInit, OnModuleDestroy {
     private transactionRepo: Repository<Transaction>,
     @InjectRepository(PixKey)
     private pixKeyRepo: Repository<PixKey>,
-    @Inject('TRANSACTION_SERVICE')
-    private kafkaClient: ClientKafka,
+    @Inject("TRANSACTION_SERVICE")
+    private kafkaClient: ClientKafka
   ) {}
 
   async onModuleInit() {
@@ -47,31 +43,25 @@ export class TransactionController implements OnModuleInit, OnModuleDestroy {
 
   @Get()
   index(
-    @Param(
-      'bankAccountId',
-      new ParseUUIDPipe({ version: '4', errorHttpStatusCode: 422 }),
-    )
-    bankAccountId: string,
+    @Param("bankAccountId", new ParseUUIDPipe({ version: "4", errorHttpStatusCode: 422 }))
+    bankAccountId: string
   ) {
     return this.transactionRepo.find({
       where: {
-        bank_account_id: bankAccountId,
+        bank_account_id: bankAccountId
       },
       order: {
-        created_at: 'DESC',
-      },
+        created_at: "DESC"
+      }
     });
   }
 
   @Post()
   async store(
-    @Param(
-      'bankAccountId',
-      new ParseUUIDPipe({ version: '4', errorHttpStatusCode: 422 }),
-    )
+    @Param("bankAccountId", new ParseUUIDPipe({ version: "4", errorHttpStatusCode: 422 }))
     bankAccountId: string,
     @Body(new ValidationPipe({ errorHttpStatusCode: 422 }))
-    body: TransactionDto,
+    body: TransactionDto
   ) {
     await this.bankAccountRepo.findOneOrFail(bankAccountId);
 
@@ -79,7 +69,7 @@ export class TransactionController implements OnModuleInit, OnModuleDestroy {
       ...body,
       amount: body.amount * -1,
       bank_account_id: bankAccountId,
-      operation: TransactionOperation.debit,
+      operation: TransactionOperation.debit
     });
     transaction = await this.transactionRepo.save(transaction);
 
@@ -89,12 +79,12 @@ export class TransactionController implements OnModuleInit, OnModuleDestroy {
       amount: body.amount,
       pixkeyto: body.pix_key_key,
       pixKeyKindTo: body.pix_key_kind,
-      description: body.description,
+      description: body.description
     };
 
     await this.kafkaProducer.send({
-      topic: 'transactions',
-      messages: [{ key: 'transactions', value: JSON.stringify(sendData) }],
+      topic: "transactions",
+      messages: [{ key: "transactions", value: JSON.stringify(sendData) }]
     });
 
     return transaction;
@@ -102,11 +92,11 @@ export class TransactionController implements OnModuleInit, OnModuleDestroy {
 
   @MessagePattern(`bank${process.env.BANK_CODE}`)
   async doTransaction(@Payload() message) {
-    if (message.value.status === 'pending') {
+    if (message.value.status === "pending") {
       await this.receivedTransaction(message.value);
     }
 
-    if (message.value.status === 'confirmed') {
+    if (message.value.status === "confirmed") {
       await this.confirmedTransaction(message.value);
     }
   }
@@ -115,8 +105,8 @@ export class TransactionController implements OnModuleInit, OnModuleDestroy {
     const pixKey = await this.pixKeyRepo.findOneOrFail({
       where: {
         key: data.pixKeyTo,
-        kind: data.pixKeyKindTo,
-      },
+        kind: data.pixKeyKindTo
+      }
     });
 
     const transaction = this.transactionRepo.create({
@@ -126,36 +116,34 @@ export class TransactionController implements OnModuleInit, OnModuleDestroy {
       bank_account_id: pixKey.bank_account_id,
       bank_account_from_id: data.accountId,
       operation: TransactionOperation.credit,
-      status: TransactionStatus.completed,
+      status: TransactionStatus.completed
     });
 
     this.transactionRepo.save(transaction);
 
     const sendData = {
       ...data,
-      status: 'confirmed',
+      status: "confirmed"
     };
 
     await this.kafkaProducer.send({
-      topic: 'transaction_confirmation',
-      messages: [
-        { key: 'transaction_confirmation', value: JSON.stringify(sendData) },
-      ],
+      topic: "transaction_confirmation",
+      messages: [{ key: "transaction_confirmation", value: JSON.stringify(sendData) }]
     });
   }
 
   async confirmedTransaction(data) {
     const transaction = await this.transactionRepo.findOneOrFail({
       where: {
-        external_id: data.id,
-      },
+        external_id: data.id
+      }
     });
 
     await this.transactionRepo.update(
       { id: data.id },
       {
-        status: TransactionStatus.completed,
-      },
+        status: TransactionStatus.completed
+      }
     );
 
     const sendData = {
@@ -165,14 +153,12 @@ export class TransactionController implements OnModuleInit, OnModuleDestroy {
       pixkeyto: transaction.pix_key_key,
       pixKeyKindTo: transaction.pix_key_kind,
       description: transaction.description,
-      status: TransactionStatus.completed,
+      status: TransactionStatus.completed
     };
 
     await this.kafkaProducer.send({
-      topic: 'transaction_confirmation',
-      messages: [
-        { key: 'transaction_confirmation', value: JSON.stringify(sendData) },
-      ],
+      topic: "transaction_confirmation",
+      messages: [{ key: "transaction_confirmation", value: JSON.stringify(sendData) }]
     });
   }
 }

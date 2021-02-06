@@ -1,12 +1,11 @@
-version: '3'
+version: "3"
 
 services:
-
   app_cter:
     build: .
     entrypoint: .docker/entrypoint.sh
     container_name: imersao-fullcycle-nest-bank-cter
-    environment: 
+    environment:
       - TYPEORM_DATABASE=cter
       - TYPEORM_HOST=db_cter
       - BANK_CODE=002
@@ -19,9 +18,9 @@ services:
       - db_cter
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
-    networks: 
+    networks:
       - cter-network
-  
+
   db_cter:
     build: .docker/postgres
     container_name: imersao-fullcycle-nest-bank-db-cter
@@ -32,9 +31,9 @@ services:
     environment:
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=cter
-    networks: 
+    networks:
       - cter-network
 
-networks: 
+networks:
   cter-network:
     driver: bridge

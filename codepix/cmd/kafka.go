@@ -16,42 +16,40 @@ limitations under the License.
 package cmd
 
 import (
-  "os"
-
-  "github.com/HRsniper/imersao-fullstack-fullcycle/application/kafka"
-  "github.com/HRsniper/imersao-fullstack-fullcycle/infrastructure/db"
-  ckafka "github.com/confluentinc/confluent-kafka-go/kafka"
-  "github.com/spf13/cobra"
+	"github.com/HRsniper/imersao-fullstack-fullcycle/application/kafka"
+	"github.com/HRsniper/imersao-fullstack-fullcycle/infrastructure/db"
+	ckafka "github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/spf13/cobra"
+	"os"
 )
 
 // kafkaCmd represents the kafka command
 var kafkaCmd = &cobra.Command{
-  Use:   "kafka",
-  Short: "Start consuming transactions using Apache Kafka",
-  Run: func(cmd *cobra.Command, args []string) {
+	Use:   "kafka",
+	Short: "Start consuming transactions using Apache Kafka",
+	Run: func(cmd *cobra.Command, args []string) {
+		deliveryChan := make(chan ckafka.Event)
+		database := db.ConnectDB(os.Getenv("env"))
+		producer := kafka.NewKafkaProducer()
 
-    deliveryChan := make(chan ckafka.Event)
-    database := db.ConnectDB(os.Getenv("env"))
-    producer := kafka.NewKafkaProducer()
+		//kafka.Publish("Ola Cosumer", "teste", producer, deliveryChan)
+		go kafka.DeliveryReport(deliveryChan)
 
-    //kafka.Publish("Ola Consumer", "teste", producer, deliveryChan)
-    go kafka.DeliveryReport(deliveryChan)
-
-    kafkaProcessor := kafka.NewKafkaProcessor(database, producer, deliveryChan)
-    kafkaProcessor.Consume()
-  },
+		kafkaProcessor := kafka.NewKafkaProcessor(database, producer, deliveryChan)
+		kafkaProcessor.Consume()
+	},
 }
 
 func init() {
-  rootCmd.AddCommand(kafkaCmd)
+	rootCmd.AddCommand(kafkaCmd)
 
-  // Here you will define your flags and configuration settings.
+	// Here you will define your flags and configuration settings.
 
-  // Cobra supports Persistent Flags which will work for this command
-  // and all subcommands, e.g.:
-  // kafkaCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// Cobra supports Persistent Flags which will work for this command
+	// and all subcommands, e.g.:
+	// kafkaCmd.PersistentFlags().String("foo", "", "A help for foo")
 
-  // Cobra supports local flags which will only run when this command
-  // is called directly, e.g.:
-  // kafkaCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// Cobra supports local flags which will only run when this command
+	// is called directly, e.g.:
+	// kafkaCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

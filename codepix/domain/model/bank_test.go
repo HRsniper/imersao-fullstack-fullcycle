@@ -12,7 +12,7 @@ import (
 func TestModel_NewBank(t *testing.T) {
 
 	code := "001"
-	name := "Banco do Brasil"
+	name := "BBX"
 
 	bank, err := model.NewBank(code, name)
 

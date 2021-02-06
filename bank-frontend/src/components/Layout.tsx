@@ -1,5 +1,5 @@
 // @flow
-import * as React from "react";
+import React from "react";
 import { BankAccount } from "../model";
 import Footer from "./Footer";
 import MainContent from "./MainContent";

@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }) {
         code: process.env.NEXT_PUBLIC_BANK_CODE,
         get cssCode() {
           return `bank${this.code}`;
-        },
+        }
       }}
     >
       <Component {...pageProps} />

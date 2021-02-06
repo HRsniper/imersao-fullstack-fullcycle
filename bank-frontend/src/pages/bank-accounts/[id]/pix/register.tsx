@@ -1,7 +1,7 @@
 // @flow
+import React from "react";
 import classes from "./PixRegister.module.scss";
 import { GetServerSideProps, NextPage } from "next";
-import * as React from "react";
 import Card from "../../../../components/Card";
 import Input from "../../../../components/Input";
 import Layout from "../../../../components/Layout";
@@ -31,18 +31,18 @@ const PixRegister: NextPage<PixRegisterProps> = (props) => {
   const { register, handleSubmit } = useForm();
 
   async function onSubmit(data) {
-    try{
+    try {
       await bankHttp.post(`bank-accounts/${id}/pix-keys`, data);
       Modal.fire({
-        title: 'Chave cadastrada com sucesso',
-        icon: 'success'
+        title: "Chave cadastrada com sucesso",
+        icon: "success"
       });
       push(`/bank-accounts/${id}`);
-    }catch(e){
+    } catch (e) {
       console.error(e);
       Modal.fire({
-        title: 'Ocorreu um erro. Verifique o console',
-        icon: 'error'
+        title: "Ocorreu um erro. Verifique o console",
+        icon: "error"
       });
     }
   }
@@ -55,20 +55,8 @@ const PixRegister: NextPage<PixRegisterProps> = (props) => {
           <Card>
             <form onSubmit={handleSubmit(onSubmit)}>
               <p className={classes.kindInfo}>Escolha um tipo de chave</p>
-              <Input
-                name="kind"
-                type="radio"
-                labelText="CPF"
-                value="cpf"
-                ref={register}
-              />
-              <Input
-                name="kind"
-                type="radio"
-                labelText="E-mail"
-                value="email"
-                ref={register}
-              />
+              <Input name="kind" type="radio" labelText="CPF" value="cpf" ref={register} />
+              <Input name="kind" type="radio" labelText="E-mail" value="email" ref={register} />
               <Input name="key" labelText="Digite a chave" ref={register} />
               <FormButtonActions>
                 <Button type="submit">Cadastrar</Button>
@@ -96,17 +84,17 @@ export default PixRegister;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
-    query: { id },
+    query: { id }
   } = ctx;
-  const [{ data: pixKeys }, {data: bankAccount}] = await Promise.all([
+  const [{ data: pixKeys }, { data: bankAccount }] = await Promise.all([
     await bankHttp.get(`bank-accounts/${id}/pix-keys`),
-    await bankHttp.get(`bank-accounts/${id}`),
-  ])
+    await bankHttp.get(`bank-accounts/${id}`)
+  ]);
 
   return {
     props: {
       pixKeys,
       bankAccount
-    },
+    }
   };
 };

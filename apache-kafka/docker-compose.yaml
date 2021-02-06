@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -43,7 +43,6 @@ services:
     ports:
       - "9021:9021"
     environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:9092'
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: "kafka:9092"
       CONTROL_CENTER_REPLICATION_FACTOR: 1
       PORT: 9021
-

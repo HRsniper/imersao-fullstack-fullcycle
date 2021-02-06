@@ -1,5 +1,5 @@
 // @flow
-import * as React from "react";
+import React from "react";
 import Layout from "../../../components/Layout";
 import classes from "./BankAccountDashboard.module.scss";
 import Link, { LinkProps } from "next/link";
@@ -75,9 +75,7 @@ const BankAccountDashboard: NextPage<BankAccountDashboardProps> = (props) => {
               <tr key={key}>
                 <td>{format(parseISO(t.created_at), "dd/MM")}</td>
                 <td colSpan={3}>{t.description}</td>
-                <td className="text-right">
-                  {t.amount.toLocaleString("pt-BR")}
-                </td>
+                <td className="text-right">{t.amount.toLocaleString("pt-BR")}</td>
               </tr>
             ))}
           </tbody>
@@ -91,17 +89,17 @@ export default BankAccountDashboard;
 
 export const getServerSideProps: GetServerSideProps = async (cxt) => {
   const {
-    query: { id },
+    query: { id }
   } = cxt;
   const [{ data: bankAccount }, { data: transactions }] = await Promise.all([
     await bankHttp.get(`bank-accounts/${id}`),
-    await bankHttp.get(`bank-accounts/${id}/transactions`),
+    await bankHttp.get(`bank-accounts/${id}/transactions`)
   ]);
 
   return {
     props: {
       bankAccount,
       transactions
-    },
+    }
   };
 };

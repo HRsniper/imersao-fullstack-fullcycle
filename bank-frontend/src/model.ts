@@ -13,18 +13,18 @@ export interface PixKey {
 
 export enum PixKeyKind {
   cpf = "cpf",
-  email = "email",
+  email = "email"
 }
 
 export enum TransactionStatus {
   pending = "pending",
   completed = "completed",
-  error = "error",
+  error = "error"
 }
 
 export enum TransactionOperation {
   debit = "debit",
-  credit = "credit",
+  credit = "credit"
 }
 
 export interface Transaction {

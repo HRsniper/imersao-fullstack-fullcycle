@@ -3,28 +3,25 @@ import { forwardRef } from "react";
 import slug from "slug";
 
 interface InputProps
-  extends React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  > {
+  extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
   labelText?: string;
 }
 const formGroupClasses = {
   text: "form-group",
   number: "form-group",
-  radio: "form-check",
+  radio: "form-check"
 };
 
 const inputClasses = {
   text: "form-control",
   number: "form-control",
-  radio: "form-check-input",
+  radio: "form-check-input"
 };
 
 const labelClasses = {
   text: "",
   number: "",
-  radio: "form-check-label",
+  radio: "form-check-label"
 };
 const Input = forwardRef<any, InputProps>((props, ref) => {
   const { labelText, type = "text", ...rest } = props;
@@ -35,9 +32,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
     </label>
   );
 
-  const CustomInput = (
-    <input id={id} className={inputClasses[type]} type={type} {...rest} ref={ref} />
-  );
+  const CustomInput = <input id={id} className={inputClasses[type]} type={type} {...rest} ref={ref} />;
   return (
     <div className={formGroupClasses[type]}>
       {type === "radio" && (

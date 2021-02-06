@@ -1,4 +1,4 @@
-import classes from './MainContent.module.scss';
+import classes from "./MainContent.module.scss";
 
 const MainContent: React.FunctionComponent = (props) => {
   return (

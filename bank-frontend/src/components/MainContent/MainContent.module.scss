@@ -11,9 +11,9 @@
 
   min-height: calc(100vh - 130px);
 
-  &>div{
+  & > div {
     padding-top: 24px;
-  
+
     @include respond-to($_992) {
       max-width: 900px;
     }

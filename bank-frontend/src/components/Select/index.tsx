@@ -1,11 +1,8 @@
 import slug from "slug";
-import { forwardRef } from "react";
+import React, { forwardRef } from "react";
 
 interface SelectProps
-  extends React.DetailedHTMLProps<
-    React.SelectHTMLAttributes<HTMLSelectElement>,
-    HTMLSelectElement
-  > {
+  extends React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
   labelText?: string;
 }
 

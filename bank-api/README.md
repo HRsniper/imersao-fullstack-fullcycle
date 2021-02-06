@@ -1,6 +1,4 @@
-# Imersão Full Stack & FullCycle - CodePix
-
-## Descrição
+# Imersão Full Stack e FullCycle
 
 Repositório da API feita com Nest.js (API dos Bancos)
 
@@ -10,16 +8,20 @@ Repositório da API feita com Nest.js (API dos Bancos)
 
 A comunicação entre as aplicações se dá de forma direta através da rede da máquina.
 Para isto é necessário configurar um endereços que todos os containers Docker consigam acessar.
+Docker Desktop adiciona automaticamente, se nao adicionar coloque manualmente.
 
 Acrescente no seu /etc/hosts (para Windows o caminho é C:\Windows\system32\drivers\etc\hosts):
+
 ```
 127.0.0.1 host.docker.internal
 ```
-Em todos os sistemas operacionais é necessário abrir o programa para editar o *hosts* como Administrator da máquina ou root.
+
+Em todos os sistemas operacionais é necessário abrir o programa para editar o _**hosts**_ como Administrator da máquina ou root.
 
 ## Rodar a aplicação
 
 Execute os comandos:
+
 ```
 mkdir dist-bbx
 mkdir dist-cter
@@ -33,11 +35,11 @@ docker-compose -f docker-compose_cter.yaml up
 
 Espere os logs verdinhos do Nest para verificar se deu certo.
 
-* Acessar http://localhost:8001/bank-accounts para listar as contas bancárias do banco BBX.
-* Acessar http://localhost:8002/bank-accounts para listar as contas bancárias do banco CTER.
+- Acessar http://localhost:8001/bank-accounts para listar as contas bancárias do banco BBX.
+- Acessar http://localhost:8002/bank-accounts para listar as contas bancárias do banco CTER.
 
-### Para Windows 
+### Para Windows
 
-Lembrar de instalar o WSL2 e Docker. Vejo o vídeo: [https://www.youtube.com/watch?v=gCUPP4E8Msc](https://www.youtube.com/watch?v=gCUPP4E8Msc) 
+Instalação do WSL2 e Docker. Vejo o vídeo: [https://www.youtube.com/watch?v=gCUPP4E8Msc](https://www.youtube.com/watch?v=gCUPP4E8Msc) _Full Cycle_
 
-Siga o guia rápido de instalação: [https://github.com/codeedu/wsl2-docker-quickstart](https://github.com/codeedu/wsl2-docker-quickstart) 
+Siga o guia rápido de instalação: [https://github.com/codeedu/wsl2-docker-quickstart](https://github.com/codeedu/wsl2-docker-quickstart) _Full Cycle_

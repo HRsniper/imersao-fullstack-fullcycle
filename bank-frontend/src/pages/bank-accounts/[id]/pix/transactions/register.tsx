@@ -1,6 +1,6 @@
 // @flow
+import React from "react";
 import { useRouter } from "next/dist/client/router";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../../../../components/Button";
 import Card from "../../../../../components/Card";
@@ -18,29 +18,29 @@ interface TransactionRegisterProps {
   bankAccount: BankAccount;
 }
 const TransactionRegister: NextPage<TransactionRegisterProps> = (props) => {
-  const {bankAccount} = props;
+  const { bankAccount } = props;
   const { register, handleSubmit } = useForm();
   const {
     query: { id },
-    push,
+    push
   } = useRouter();
 
   async function onSubmit(data) {
     try {
       await bankHttp.post(`bank-accounts/${id}/transactions`, {
         ...data,
-        amount: new Number(data.amount),
+        amount: new Number(data.amount)
       });
       Modal.fire({
         title: "Transação realizada com sucesso",
-        icon: "success",
+        icon: "success"
       });
       push(`/bank-accounts/${id}`);
     } catch (e) {
       console.error(e);
       Modal.fire({
         title: "Ocorreu um erro. Verifique o console",
-        icon: "error",
+        icon: "error"
       });
     }
   }
@@ -88,13 +88,13 @@ export default TransactionRegister;
 
 export const getServerSideProps: GetServerSideProps = async (cxt) => {
   const {
-    query: { id },
+    query: { id }
   } = cxt;
   const { data: bankAccount } = await bankHttp.get(`bank-accounts/${id}`);
 
   return {
     props: {
-      bankAccount,
-    },
+      bankAccount
+    }
   };
 };

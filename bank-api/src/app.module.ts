@@ -1,20 +1,20 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { MyFirstController } from './controllers/my-first/my-first.controller';
-import { BankAccount } from './models/bank-account.model';
-import { BankAccountController } from './controllers/bank-account/bank-account.controller';
-import { ConsoleModule } from 'nestjs-console';
-import { FixturesCommand } from './fixtures/fixtures.command';
-import { PixKeyController } from './controllers/pix-key/pix-key.controller';
-import { PixKey } from './models/pix-key.model';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { join } from 'path';
-import { TransactionController } from './controllers/transaction/transaction.controller';
-import { Transaction } from './models/transaction.model';
-import { TransactionSubscriber } from './subscribers/transaction-subscriber/transaction-subscriber.service';
+import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { MyFirstController } from "./controllers/my-first/my-first.controller";
+import { BankAccount } from "./models/bank-account.model";
+import { BankAccountController } from "./controllers/bank-account/bank-account.controller";
+import { ConsoleModule } from "nestjs-console";
+import { FixturesCommand } from "./fixtures/fixtures.command";
+import { PixKeyController } from "./controllers/pix-key/pix-key.controller";
+import { PixKey } from "./models/pix-key.model";
+import { ClientsModule, Transport } from "@nestjs/microservices";
+import { join } from "path";
+import { TransactionController } from "./controllers/transaction/transaction.controller";
+import { Transaction } from "./models/transaction.model";
+import { TransactionSubscriber } from "./subscribers/transaction-subscriber/transaction-subscriber.service";
 
 @Module({
   imports: [
@@ -32,18 +32,18 @@ import { TransactionSubscriber } from './subscribers/transaction-subscriber/tran
     TypeOrmModule.forFeature([BankAccount, PixKey, Transaction]),
     ClientsModule.register([
       {
-        name: 'CODEPIX_PACKAGE',
+        name: "CODEPIX_PACKAGE",
         transport: Transport.GRPC,
         options: {
           url: process.env.GRPC_URL,
-          package: 'github.com.codeedu.codepix',
-          protoPath: [join(__dirname, 'protofiles/pixkey.proto')]
+          package: "github.com.HRsniper.codepix",
+          protoPath: [join(__dirname, "protofiles/pixkey.proto")]
         }
       }
     ]),
     ClientsModule.register([
       {
-        name: 'TRANSACTION_SERVICE',
+        name: "TRANSACTION_SERVICE",
         transport: Transport.KAFKA,
         options: {
           client: {
@@ -51,16 +51,22 @@ import { TransactionSubscriber } from './subscribers/transaction-subscriber/tran
             brokers: [process.env.KAFKA_BROKER]
           },
           consumer: {
-            groupId: !process.env.KAFKA_CONSUMER_GROUP_ID ||
-              process.env.KAFKA_CONSUMER_GROUP_ID === ''
-                ? 'my-consumer-' + Math.random()
-                : process.env.KAFKA_CONSUMER_GROUP_ID,
+            groupId:
+              !process.env.KAFKA_CONSUMER_GROUP_ID || process.env.KAFKA_CONSUMER_GROUP_ID === ""
+                ? "my-consumer-" + Math.random()
+                : process.env.KAFKA_CONSUMER_GROUP_ID
           }
         }
       }
     ])
   ],
-  controllers: [AppController, MyFirstController, BankAccountController, PixKeyController, TransactionController],
-  providers: [AppService, FixturesCommand, TransactionSubscriber],
+  controllers: [
+    AppController,
+    MyFirstController,
+    BankAccountController,
+    PixKeyController,
+    TransactionController
+  ],
+  providers: [AppService, FixturesCommand, TransactionSubscriber]
 })
 export class AppModule {}

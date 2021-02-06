@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import classes from "./Card.module.scss";
 
 const Card: React.FunctionComponent = (props) => {

@@ -32,3 +32,41 @@ kubectl cluster-info --context kind-codepix
 kubectl get nodes
 ```
 
+### Aplicando deployment
+
+```
+cd .\k8s\codepix\
+
+kubectl apply -f configmap.yaml
+kubectl apply -f deploy.yaml
+
+kubectl get pods
+```
+
+#### Vendo erros e logs
+
+```
+kubectl describe pod PODE_NAME
+
+kubectl logs PODE_NAME
+```
+
+Não é recomendado instalar um database no kubernetes, mas vamos fazer.
+
+### helm
+
+[Helm](https://helm.sh/) é um gerenciador de pacotes para Kubernetes
+
+```
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+
+chmod 700 get_helm.sh
+
+./get_helm.sh
+```
+```
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+helm install postgres bitnami/postgresql
+```
+

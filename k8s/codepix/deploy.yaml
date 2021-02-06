@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codepix
+spec:
+  selector:
+    matchLabels:
+      app: codepix
+  template:
+    metadata:
+      labels:
+        app: codepix
+    spec:
+      containers:
+        - name: codepix
+          image: HRsniper/codepix
+          ports:
+            - containerPort: 50051
+          volumeMounts:
+            - name: codepix-volume
+              mounthPath: /go/src/.env
+              subPath: .env
+
+      volumes:
+        - name: codepix-volume
+          configMap:
+            name: codepix-conf
+            itens:
+              - key: env
+                path: .env

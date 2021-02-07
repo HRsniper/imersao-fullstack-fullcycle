@@ -64,9 +64,59 @@ chmod 700 get_helm.sh
 
 ./get_helm.sh
 ```
+
 ```
 helm repo add bitnami https://charts.bitnami.com/bitnami
 
 helm install postgres bitnami/postgresql
 ```
 
+Depois de instalar vai mostra como pegar sua senha e se conectar no banco
+
+![.github/kubectl_postgres.jpg](.github/kubectl_postgres.jpg)
+
+- Exporte a senha
+- Ver a senha `echo $POSTGRES_PASSWORD`
+
+Ver se postgres esta rodando:
+
+```
+kubectl get pods
+```
+
+- Conectar no banco ( _segundo comando da imagem_ )
+
+Criando bancos de dados ( _conectado no banco_ ):
+
+```
+CREATE DATABASE codepix;
+
+CREATE DATABASE bank001;
+
+CREATE DATABASE bank002;
+```
+
+```
+cd .\k8s\codepix\
+
+kubectl apply -f secret.yaml
+kubectl apply -f deploy.yaml
+```
+
+Caso erro apague o pod:
+
+```
+kubectl delete pod POD_NAME
+```
+
+Não é recomendado instalar o kafka no kubernetes, mas vamos fazer.
+
+```
+helm install kafka bitnami/kafka
+```
+
+```
+kubectl apply -f service.yaml
+
+kubectl get svc
+```

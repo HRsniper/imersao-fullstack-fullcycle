@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: codepix
 spec:
+  replicas: 3
   selector:
     matchLabels:
       app: codepix
@@ -13,9 +14,14 @@ spec:
     spec:
       containers:
         - name: codepix
-          image: HRsniper/codepix
+          image: HRsniper/
+          command: [",/codepix", "all"]
+
           ports:
             - containerPort: 50051
+          envFrom:
+            - secretRef:
+                name: codepix-secret
           volumeMounts:
             - name: codepix-volume
               mounthPath: /go/src/.env

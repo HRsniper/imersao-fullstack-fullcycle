@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bankfrontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bankfrontend
+  template:
+    metadata:
+      labels:
+        app: bankfrontend
+    spec:
+      containers:
+        - name: bankfrontend
+          image: HRsniper/bankfrontend
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: bankfrontend-volume
+              mounthPath: /app/.env
+              subPath: .env
+
+      volumes:
+        - name: bankfrontend-volume
+          configMap:
+            name: bankfrontend-conf
+            itens:
+              - key: env
+                path: .env

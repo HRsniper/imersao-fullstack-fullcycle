@@ -4,6 +4,8 @@
 docker build -t HRsniper/codepix:latest -f codepix/Dockerfile.prod codepix
 
 docker build -t HRsniper/bankapi:latest -f bank-api/Dockerfile.prod bank-api
+
+docker build -t HRsniper/bankfrontend:latest -f bank-frontend/Dockerfile.prod bank-frontend
 ```
 
 ### Docker hub
@@ -12,6 +14,8 @@ docker build -t HRsniper/bankapi:latest -f bank-api/Dockerfile.prod bank-api
 docker push HRsniper/codepix:latest
 
 docker push HRsniper/bankapi:latest
+
+docker push HRsniper/bankfrontend:latest
 ```
 
 ### Kubernetes
@@ -160,8 +164,7 @@ Apontamento da maquina real para o cluster
 kubectl port-forward srv/bankapi-service 8080:3000
 ```
 
-Abra algo para ver se
-esta online `http://localhost:8080/`
+Abra algo para ver se esta online `http://localhost:8080/`
 
 ### Bank-api 002
 
@@ -181,4 +184,42 @@ kubectl exec -it POD_NAME bash
 ```
 npm run typeorm migration:run
 npm run console fixtures
+```
+
+## Bank front end
+
+```
+cd .\k8s\bankfrontend\
+
+kubectl apply -f .
+
+kubectl get pods
+
+kubectl exec -it POD_NAME bash
+```
+
+Apontamento da maquina real (**CPU**) para o cluster. extern-ip vai ficar pendente
+porque a **CPU** nao consegue provisionar um ip externo, caso fosse uma **Azure**, **AWS**,
+**Google Cloud**, **DigitalOcean** o ip externo ja seria disponibilizado.
+
+```
+kubectl port-forward srv/bankfrontend-service 9090:3000
+```
+
+Abra algo para ver se esta online `http://localhost:9090/`
+
+Em Desenvolvimento nao consegue-se cadastrar uma pix key ou fazer transferência,
+para funcionar somente colocando no **ar** e colocando o ip externo na `NEXT_PUBLIC_NEST_API_URL=https://EXTERN_IP:3000/api`
+
+## Bank front end 002
+
+```
+cd .\k8s\bankfrontend002\
+
+kubectl apply -f .
+
+kubectl get pods
+kubectl get scv
+
+kubectl port-forward srv/bankfrontend002-service 9091:3000
 ```

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: codepix
-          image: HRsniper/codepix
+          image: herculesr/codepix
           command: ["./codepix", "all"]
 
           ports:

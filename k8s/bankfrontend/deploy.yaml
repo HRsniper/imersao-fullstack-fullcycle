@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bankfrontend
-          image: HRsniper/bankfrontend
+          image: herculesr/bankfrontend
           ports:
             - containerPort: 3000
           volumeMounts:

@@ -1,21 +1,21 @@
 ## Gerando image do docker
 
 ```
-docker build -t HRsniper/codepix:latest -f codepix/Dockerfile.prod codepix
+docker build -t herculesr/codepix:latest -f codepix/Dockerfile.prod codepix
 
-docker build -t HRsniper/bankapi:latest -f bank-api/Dockerfile.prod bank-api
+docker build -t herculesr/bankapi:latest -f bank-api/Dockerfile.prod bank-api
 
-docker build -t HRsniper/bankfrontend:latest -f bank-frontend/Dockerfile.prod bank-frontend
+docker build -t herculesr/bankfrontend:latest -f bank-frontend/Dockerfile.prod bank-frontend
 ```
 
 ### Docker hub
 
 ```
-docker push HRsniper/codepix:latest
+docker push herculesr/codepix:latest
 
-docker push HRsniper/bankapi:latest
+docker push herculesr/bankapi:latest
 
-docker push HRsniper/bankfrontend:latest
+docker push herculesr/bankfrontend:latest
 ```
 
 ### Kubernetes

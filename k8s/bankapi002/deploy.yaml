@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bankapi002
-          image: HRsniper/bankapi
+          image: herculesr/bankapi
           ports:
             - containerPort: 3000
           envFrom:

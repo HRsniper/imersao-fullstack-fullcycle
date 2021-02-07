@@ -2,12 +2,16 @@
 
 ```
 docker build -t HRsniper/codepix:latest -f codepix/Dockerfile.prod codepix
+
+docker build -t HRsniper/bankapi:latest -f bank-api/Dockerfile.prod bank-api
 ```
 
 ### Docker hub
 
 ```
 docker push HRsniper/codepix:latest
+
+docker push HRsniper/bankapi:latest
 ```
 
 ### Kubernetes
@@ -119,4 +123,62 @@ helm install kafka bitnami/kafka
 kubectl apply -f service.yaml
 
 kubectl get svc
+```
+
+## Bank-api
+
+```
+cd .\k8s\bankapi\
+
+kubectl apply -f configmap.yaml
+kubectl apply -f secret.yaml
+
+kubectl get configmaps
+
+kubectl apply -f secret.yaml
+kubectl apply -f service.yaml
+
+kubectl get svc
+```
+
+```
+kubectl get po
+
+kubectl exec -it POD_NAME bash
+```
+
+- Dentro do container:
+
+```
+npm run typeorm migration:run
+npm run console fixtures
+```
+
+Apontamento da maquina real para o cluster
+
+```
+kubectl port-forward srv/bankapi-service 8080:3000
+```
+
+Abra algo para ver se
+esta online `http://localhost:8080/`
+
+### Bank-api 002
+
+```
+cd .\k8s\bankapi002\
+
+kubectl apply -f .
+
+kubectl get po
+
+kubectl exec -it POD_NAME bash
+
+```
+
+- Dentro do container:
+
+```
+npm run typeorm migration:run
+npm run console fixtures
 ```

@@ -1,36 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: codepix
+  name: bankapi002
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: codepix
+      app: bankapi002
   template:
     metadata:
       labels:
-        app: codepix
+        app: bankapi002
     spec:
       containers:
-        - name: codepix
-          image: HRsniper/codepix
-          command: ["./codepix", "all"]
-
+        - name: bankapi002
+          image: HRsniper/bankapi
           ports:
-            - containerPort: 50051
+            - containerPort: 3000
           envFrom:
             - secretRef:
-                name: codepix-secret
+                name: bankapi002-secret
           volumeMounts:
-            - name: codepix-volume
-              mounthPath: /go/src/.env
+            - name: bankapi002-volume
+              mounthPath: /home/node/app/.env
               subPath: .env
 
       volumes:
-        - name: codepix-volume
+        - name: bankapi002-volume
           configMap:
-            name: codepix-conf
+            name: bankapi002-conf
             itens:
               - key: env
                 path: .env
